@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GlobalData : MonoBehaviour
 {
-    public static float PlayerRotationSpeedVert = 400.0f;
-    public static float PlayerRotationSpeedHorz = 400.0f;
+    public static float PlayerRotationSpeedVert = 800.0f;
+    public static float PlayerRotationSpeedHorz = 800.0f;
 
 
     public static void LockMouse() {
