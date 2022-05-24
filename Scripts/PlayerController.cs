@@ -175,11 +175,11 @@ public class PlayerController : MonoBehaviour
                     _camera.transform.eulerAngles.z
                 );
 
-                _camera.transform.localPosition = new Vector3(
-                    0.0f,
-                    CAMERA_HEIGHT,
-                    0.0f
-                );
+                // _camera.transform.localPosition = new Vector3(
+                //     0.0f,
+                //     CAMERA_HEIGHT,
+                //     0.0f
+                // );
 
                 _controller.Move(transform.TransformDirection(Vector3.forward) + new Vector3(0.0f, 1.5f, 0.0f));
 
@@ -208,6 +208,20 @@ public class PlayerController : MonoBehaviour
         // apply rotation
         transform.Rotate(playerRotDir * Time.deltaTime);
         _camera.transform.Rotate(cameraRotDir * Time.deltaTime);
+
+        Debug.Log(_camera.transform.localRotation);
+
+        _camera.transform.eulerAngles = new Vector3(
+            _camera.transform.eulerAngles.x,//Mathf.Clamp(_camera.transform.eulerAngles.x, 90.0f, -90.0f),
+            _camera.transform.eulerAngles.y,
+            _camera.transform.eulerAngles.z
+        );
+
+        _camera.transform.localPosition = new Vector3(
+            Mathf.Lerp(_camera.transform.localPosition.x, 0.0f, 8.0f * Time.deltaTime),
+            Mathf.Lerp(_camera.transform.localPosition.y, CAMERA_HEIGHT, 0.5f * Time.deltaTime),
+            Mathf.Lerp(_camera.transform.localPosition.z, 0.0f, 8.0f * Time.deltaTime)
+        );
     }
 
 
