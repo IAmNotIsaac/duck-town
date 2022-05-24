@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
+    [SerializeField] private DuckNavigation duck;
     private Vector3 _playerVelocity;
     private PlayerState _state;
 
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         StateUpdate(_state);
+        duck.GoTo(transform.position);
     }
 
 
