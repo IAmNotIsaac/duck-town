@@ -10,7 +10,8 @@ public class DuckNavigation : MonoBehaviour
     enum NavState {
         WANDER,             // go to random location
         CHASE,              // go to player's last seen location
-        ALERT               // go to alert location
+        ALERT,              // go to alert location
+        EXIT                // go to level exit
     }
 
     [SerializeField] public Vector3 _destination;
@@ -37,6 +38,10 @@ public class DuckNavigation : MonoBehaviour
             }
 
             case NavState.ALERT: {
+                break;
+            }
+
+            case NavState.EXIT: {
                 break;
             }
         }
