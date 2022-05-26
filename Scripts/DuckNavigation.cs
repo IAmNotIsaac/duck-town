@@ -7,8 +7,16 @@ using UnityEngine.AI;
 // TODO: literally finish it
 public class DuckNavigation : MonoBehaviour
 {
+    enum NavState {
+        WANDER,             // go to random location
+        CHASE,              // go to player's last seen location
+        ALERT               // go to alert location
+    }
+
     [SerializeField] public Vector3 _destination;
     [SerializeField] private NavMeshAgent _agent;
+
+    private NavState _navState = NavState.WANDER;
 
 
     void Start()
@@ -19,12 +27,18 @@ public class DuckNavigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+        switch (_navState) {
+            case NavState.WANDER: {
+                break;
+            }
 
+            case NavState.CHASE: {
+                break;
+            }
 
-    public void GoTo(Vector3 where)
-    {
-        _agent.destination = where;
+            case NavState.ALERT: {
+                break;
+            }
+        }
     }
 }

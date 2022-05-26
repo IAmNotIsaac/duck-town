@@ -50,12 +50,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         StateUpdate(_state);
-        duck.GoTo(transform.position);
     }
 
 
     // State stuff.
-    // TODO: Move state stuff into ABC instead.
     void StateUpdate(PlayerState state)
     {
         switch (state)
