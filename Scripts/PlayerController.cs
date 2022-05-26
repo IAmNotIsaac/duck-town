@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     const float CLIMB_HEIGHT = 0.5f;
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
+    const float ARM_REACH = 2.0f;
 
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
@@ -115,6 +116,24 @@ public class PlayerController : MonoBehaviour
                     }
 
                     _playerVelocity.y = Mathf.Max(_playerVelocity.y - GRAVITY * Time.deltaTime, TERMINAL_FALL_VELOCITY);
+                }
+
+
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    RaycastHit hit;
+
+                    Debug.DrawRay(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), Color.white, ARM_REACH);
+
+                    if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
+                    {
+                        Switch switch_ = hit.collider.GetComponent<Switch>();
+                        if (switch_ != null)
+                        {
+                            switch_.Interact();
+                        }
+                    }
+
                 }
 
 
