@@ -51,6 +51,7 @@ MonoBehaviour:
   _controller: {fileID: 5231726919104732754}
   _camera: {fileID: 2699417510334677611}
   _cameraDirector: {fileID: 5057889750055250646}
+  duck: {fileID: 0}
 --- !u!143 &5231726919104732754
 CharacterController:
   m_ObjectHideFlags: 0
@@ -62,8 +63,8 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.8
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -96,7 +97,6 @@ GameObject:
   - component: {fileID: 6419316582248248485}
   - component: {fileID: 7800657076584829093}
   - component: {fileID: 7415619235679357251}
-  - component: {fileID: 6673029856071602818}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 8302055594161596908}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 236105422163769861}
@@ -169,20 +169,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6673029856071602818
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8302055594161596908}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8813646354045227249
 GameObject:
   m_ObjectHideFlags: 0
