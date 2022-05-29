@@ -9,14 +9,21 @@ public class PlayerController : MonoBehaviour
     public enum PlayerState
     {
         DEFAULT,
+        WATER,
         CLIMB_PREP,
         CLIMB
     }
 
     const float GRAVITY = 20.0f;
+    const float WATER_GRAVITY = 5.0f;
     const float JUMP_FORCE = 3.0f;
-    const float TERMINAL_FALL_VELOCITY = -100f;
+    const float TERMINAL_FALL_VELOCITY = -100.0f;
     const float WALK_SPEED = 12.0f;
+    const float SWIM_SPEED = 10.0f;
+    const float VERTICAL_SWIM_SPEED = 5.0f;
+    const float SWIM_ACCELERATION = 0.4f;
+    const float WATER_WALK_SPEED = 8.0f;
+    const float UNDERWATER_WALK_SPEED = 6.0f;
     const float CLIMB_HEIGHT = 0.6f;
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
@@ -33,6 +40,9 @@ public class PlayerController : MonoBehaviour
     // state specific vars
     // DEFAULT
     private float _default_leaveGroundTime = 0.0f;
+
+    // WATER
+    private Collider _water;
 
     // CLIMB_PREP
     private float _climbPrep_targetAngle = 0.0f;
@@ -121,22 +131,103 @@ public class PlayerController : MonoBehaviour
                 }
 
 
-                RaycastHit hit;
+                { // Interacting
+                    RaycastHit hit;
 
-                _reticleHint.enabled = false;
-                
-                if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
-                {
-                    Switch switch_ = hit.collider.GetComponent<Switch>();
-                    if (switch_ != null)
+                    _reticleHint.enabled = false;
+                    
+                    if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
                     {
-                        _reticleHint.enabled = true;
-
-                        if (Input.GetButtonDown("Fire1"))
+                        Switch switch_ = hit.collider.GetComponent<Switch>();
+                        if (switch_ != null)
                         {
-                            switch_.Interact();
+                            _reticleHint.enabled = true;
+
+                            if (Input.GetButtonDown("Fire1"))
+                            {
+                                switch_.Interact();
+                            }
                         }
                     }
+                }
+
+
+                if (_water)
+                {
+                    SwitchState(PlayerState.WATER);
+                }
+
+
+                break;
+            }
+
+
+            case PlayerState.WATER: {
+                DefaultCameraMovement();
+
+
+                int layerMask = 1 << 4;
+                bool headUnderwater = Physics.CheckBox(_camera.transform.position, Vector3.zero, Quaternion.identity, layerMask);
+                bool grounded = CanJump();
+
+
+                { // Walking
+                    float speedFactor = SWIM_SPEED;
+
+                    if (grounded)
+                    {
+                        speedFactor = WATER_WALK_SPEED;
+                        if (headUnderwater)
+                        {
+                            speedFactor = UNDERWATER_WALK_SPEED;
+                        }
+                    }
+
+                    var forward = transform.TransformDirection(Vector3.forward);
+                    var strafe = transform.TransformDirection(Vector3.right);
+
+                    var speed = new Vector2(
+                        speedFactor * Input.GetAxis("Horizontal"),
+                        speedFactor * Input.GetAxis("Vertical")
+                    );
+
+                    var move = forward * speed.y + strafe * speed.x;
+
+                    _controller.Move(move * Time.deltaTime / 2.0f);
+                }
+
+
+                { // Swimming up/down + gravity
+                    _controller.Move(_playerVelocity * Time.deltaTime);
+                    
+                    if (grounded)
+                    {
+                        _playerVelocity.y = 0.0f;
+                    }
+
+                    if (headUnderwater)
+                    {
+                        _playerVelocity.y += Input.GetAxis("Jump") * SWIM_ACCELERATION;
+                    }
+
+                    _playerVelocity.y = Mathf.Clamp(_playerVelocity.y - WATER_GRAVITY * Time.deltaTime, -VERTICAL_SWIM_SPEED, VERTICAL_SWIM_SPEED / 2.0f);
+                }
+
+
+                { // Climbing
+                    if (
+                        Input.GetButtonDown("Jump") &&
+                        !Physics.Raycast(transform.position + new Vector3(0.0f, CLIMB_HEIGHT, 0.0f), transform.TransformDirection(Vector3.forward), 0.8f) &&
+                        Physics.Raycast(transform.position - new Vector3(0.0f, 0.25f, 0.0f), transform.TransformDirection(Vector3.forward), 0.8f)
+                    ) {
+                        SwitchState(PlayerState.CLIMB_PREP);
+                    }
+                }
+
+
+                if (_water == null)
+                {
+                    SwitchState(PlayerState.DEFAULT);
                 }
 
 
@@ -298,6 +389,25 @@ public class PlayerController : MonoBehaviour
 
     bool CanJump()
     {
-        return _controller.isGrounded || Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 1.05f);
+        int layerMask = 1 << 4;
+        return _controller.isGrounded || Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 1.05f, ~layerMask);
+    }
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Water")
+        {
+            _water = other;
+        }
+    }
+
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Water")
+        {
+            _water = null;
+        }
     }
 }
