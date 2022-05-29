@@ -34,6 +34,7 @@ public class DoorManager : MonoBehaviour
             _state = OpenState.OPEN;
             _director.Play();
             _duckDoor.Open();
+            _duck.SwitchState(DuckNavigation.NavState.EXIT);
         }
     }
 }
