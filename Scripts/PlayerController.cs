@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
+    [SerializeField] private RawImage _reticleHint;
     [SerializeField] private DuckNavigation duck;
     private Vector3 _playerVelocity;
     private PlayerState _state;
@@ -119,21 +121,22 @@ public class PlayerController : MonoBehaviour
                 }
 
 
-                if (Input.GetButtonDown("Fire1"))
+                RaycastHit hit;
+
+                _reticleHint.enabled = false;
+                
+                if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
                 {
-                    RaycastHit hit;
-
-                    Debug.DrawRay(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), Color.white, ARM_REACH);
-
-                    if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
+                    Switch switch_ = hit.collider.GetComponent<Switch>();
+                    if (switch_ != null)
                     {
-                        Switch switch_ = hit.collider.GetComponent<Switch>();
-                        if (switch_ != null)
+                        _reticleHint.enabled = true;
+
+                        if (Input.GetButtonDown("Fire1"))
                         {
                             switch_.Interact();
                         }
                     }
-
                 }
 
 
@@ -217,6 +220,13 @@ public class PlayerController : MonoBehaviour
     {
         switch (state)
         {
+            case PlayerState.DEFAULT: {
+                _reticleHint.enabled = false;
+
+                break;
+            }
+
+
             case PlayerState.CLIMB: {
                 _cameraDirector.Stop();
 
