@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                     
-                    if (canJump)
+                    if (_controller.isGrounded)
                     {
                         _default_leaveGroundTime = 0.0f;
                     }
@@ -298,6 +298,6 @@ public class PlayerController : MonoBehaviour
 
     bool CanJump()
     {
-        return _controller.isGrounded || Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 1.2f);
+        return _controller.isGrounded || Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 1.05f);
     }
 }
