@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     const float JUMP_FORCE = 3.0f;
     const float TERMINAL_FALL_VELOCITY = -100f;
     const float WALK_SPEED = 12.0f;
-    const float CLIMB_HEIGHT = 0.5f;
+    const float CLIMB_HEIGHT = 0.6f;
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
     const float ARM_REACH = 2.0f;
