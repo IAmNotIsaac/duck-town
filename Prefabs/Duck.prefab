@@ -69,8 +69,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194665ada7bdc4843b94fa8287b3845b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destination: {x: 0, y: 0, z: 0}
   _agent: {fileID: 4350688397032810411}
+  _modelTransform: {fileID: 4148716829394157826}
+  _wanderPoints: []
+  _exitPoint: {fileID: 0}
 --- !u!1 &8742401759919695125
 GameObject:
   m_ObjectHideFlags: 0
