@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
-        _inputVector.Normalize();
+        // _inputVector.Normalize();
         StateUpdate(_state);
     }
 
