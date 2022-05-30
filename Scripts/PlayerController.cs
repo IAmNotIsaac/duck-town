@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private DuckNavigation duck;
     private Vector3 _playerVelocity;
     private PlayerState _state;
+    private Vector2 _inputVector = Vector2.zero;
 
     // state specific vars
     // DEFAULT
@@ -63,6 +64,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        _inputVector = new Vector2(
+            Input.GetAxis("Horizontal"),
+            Input.GetAxis("Vertical")
+        );
+        _inputVector.Normalize();
         StateUpdate(_state);
     }
 
@@ -81,8 +87,8 @@ public class PlayerController : MonoBehaviour
                     var strafe = transform.TransformDirection(Vector3.right);
 
                     var speed = new Vector2(
-                        WALK_SPEED * Input.GetAxis("Horizontal"),
-                        WALK_SPEED * Input.GetAxis("Vertical")
+                        WALK_SPEED * _inputVector.x,
+                        WALK_SPEED * _inputVector.y
                     );
 
                     var move = forward * speed.y + strafe * speed.x;
@@ -191,8 +197,8 @@ public class PlayerController : MonoBehaviour
                     var strafe = transform.TransformDirection(Vector3.right);
 
                     var speed = new Vector2(
-                        speedFactor * Input.GetAxis("Horizontal"),
-                        speedFactor * Input.GetAxis("Vertical")
+                        speedFactor * _inputVector.x,
+                        speedFactor * _inputVector.y
                     );
 
                     var move = forward * speed.y + strafe * speed.x;
