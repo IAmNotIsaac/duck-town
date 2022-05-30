@@ -19,11 +19,11 @@ public class PlayerController : MonoBehaviour
     const float JUMP_FORCE = 3.0f;
     const float TERMINAL_FALL_VELOCITY = -100.0f;
     const float WALK_SPEED = 12.0f;
-    const float SWIM_SPEED = 10.0f;
-    const float VERTICAL_SWIM_SPEED = 5.0f;
+    const float SWIM_SPEED = 8.0f;
+    const float VERTICAL_SWIM_SPEED = 3.0f;
     const float SWIM_ACCELERATION = 0.4f;
-    const float WATER_WALK_SPEED = 8.0f;
-    const float UNDERWATER_WALK_SPEED = 6.0f;
+    const float WATER_WALK_SPEED = 5.0f;
+    const float UNDERWATER_WALK_SPEED = 3.0f;
     const float CLIMB_HEIGHT = 0.6f;
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
