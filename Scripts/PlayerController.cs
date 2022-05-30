@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
     [SerializeField] private RawImage _reticleHint;
+    [SerializeField] private Image _waterOverlay;
     [SerializeField] private DuckNavigation duck;
     private Vector3 _playerVelocity;
     private PlayerState _state;
@@ -169,6 +170,9 @@ public class PlayerController : MonoBehaviour
                 int layerMask = 1 << 4;
                 bool headUnderwater = Physics.CheckBox(_camera.transform.position, Vector3.zero, Quaternion.identity, layerMask);
                 bool grounded = CanJump();
+
+
+                _waterOverlay.enabled = headUnderwater;
 
 
                 { // Walking
@@ -313,6 +317,13 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.DEFAULT: {
                 _reticleHint.enabled = false;
+
+                break;
+            }
+
+
+            case PlayerState.WATER: {
+                _waterOverlay.enabled = false;
 
                 break;
             }
