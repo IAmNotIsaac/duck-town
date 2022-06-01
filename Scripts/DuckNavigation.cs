@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
 
 
 // TODO: literally finish it
@@ -24,6 +25,7 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private Transform _modelTransform;
     [SerializeField] private Transform _eyesTransform;
+    [SerializeField] private Animation _anim;
 
     private NavState _navState = NavState.WANDER;
 
@@ -34,7 +36,7 @@ public class DuckNavigation : MonoBehaviour
 
     void Start()
     {
-
+        _anim.Play("Armature|Walk");
     }
 
     // Update is called once per frame
