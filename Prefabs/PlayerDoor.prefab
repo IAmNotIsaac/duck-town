@@ -51,6 +51,7 @@ MonoBehaviour:
   _duck: {fileID: 0}
   _nextLevelID: 0
   _duckDoor: {fileID: 0}
+  _doorCollision: {fileID: 8968150655767369825}
 --- !u!320 &159100244032554037
 PlayableDirector:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class DoorManager : MonoBehaviour
     [SerializeField] private DuckNavigation _duck;
     [SerializeField] private int _nextLevelID;
     [SerializeField] private DuckDoor _duckDoor;
+    [SerializeField] private Collider _doorCollision;
     private PlayableDirector _director;
     private OpenState _state = OpenState.CLOSED;
 
@@ -32,6 +33,7 @@ public class DoorManager : MonoBehaviour
         if (_state == OpenState.CLOSED)
         {
             _state = OpenState.OPEN;
+            _doorCollision.enabled = false;
             _director.Play();
             _duckDoor.Open();
             _duck.SwitchState(DuckNavigation.NavState.EXIT);
