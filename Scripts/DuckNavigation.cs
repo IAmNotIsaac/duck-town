@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 public class DuckNavigation : MonoBehaviour
 {
     public enum NavState {
+        IDLE,               // no move dawg
         WANDER,             // go to random location
         CHASE,              // go to player's last seen location
         CHECK,              // we lost player, look around area
@@ -16,7 +17,7 @@ public class DuckNavigation : MonoBehaviour
         EXIT                // go to level exit
     }
 
-    private const float IDLE_WANDER_TIME = 6.0f;
+    private const float IDLE_WANDER_TIME = 2.0f;
 
     // [SerializeField] public Vector3 _destination;
     [SerializeField] private NavMeshAgent _agent;
@@ -27,7 +28,7 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Transform _eyesTransform;
     [SerializeField] private Animator _anim;
 
-    private NavState _navState = NavState.WANDER;
+    private NavState _navState = NavState.IDLE;
 
     private float _idleTime = 0.0f;
     private System.Random _rnd = new System.Random();
@@ -57,6 +58,17 @@ public class DuckNavigation : MonoBehaviour
     void StateUpdate(NavState state)
     {
         switch (_navState) {
+            case NavState.IDLE: {
+                if (_idleTime >= IDLE_WANDER_TIME)
+                {
+                    SwitchState(NavState.WANDER);
+                }
+                _idleTime += Time.deltaTime;
+
+                break;
+            }
+
+
             case NavState.WANDER: {
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
@@ -75,13 +87,7 @@ public class DuckNavigation : MonoBehaviour
                 // Go to random wander points
                 if (Vector3.Distance(_agent.destination, transform.position) < 1.0f)
                 {
-                    _idleTime += Time.deltaTime;
-
-                    if (_idleTime >= IDLE_WANDER_TIME)
-                    {
-                        _agent.destination = _wanderPoints[_rnd.Next() % _wanderPoints.Length].position;
-                        _idleTime = 0.0f;
-                    }
+                    SwitchState(NavState.IDLE);
                 }
 
                 break;
@@ -129,8 +135,14 @@ public class DuckNavigation : MonoBehaviour
         Debug.Log(newState);
         switch (newState)
         {
-            case NavState.WANDER: {
+            case NavState.IDLE: {
                 _idleTime = 0.0f;
+
+                break;
+            }
+
+
+            case NavState.WANDER: {
                 _agent.destination = _wanderPoints[_rnd.Next() % _wanderPoints.Length].position;
 
                 break;
