@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 0318800da6eac7b41bb82d693afd9609, type: 2}
+--- !u!114 &78740341 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3960851887319241096, guid: bfb13a7d5459c714e80833a916f140d2, type: 3}
+  m_PrefabInstance: {fileID: 1608299462}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b663892af1bff4191df15ec8d4cbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &103800149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,6 +334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Duck
       objectReference: {fileID: 0}
+    - target: {fileID: 6047172918773305518, guid: 83854d19eea051b41b9c2bcfcd38b6dc, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 78740341}
     - target: {fileID: 6047172918773305518, guid: 83854d19eea051b41b9c2bcfcd38b6dc, type: 3}
       propertyPath: _exitPoint
       value: 
