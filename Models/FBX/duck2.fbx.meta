@@ -1,17 +1,14 @@
 fileFormatVersion: 2
-guid: 2a1913c90799b404bbd5f3df6ec72dc8
+guid: ccc494d506b70a94e8b9a52a50449573
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
   - first:
-      74: -623603649343465320
-    second: Walk
+      74: -7551964380084998518
+    second: Armature|Run
   - first:
-      74: 5522812681064789136
-    second: Run
-  - first:
-      74: -623603649343465320
-    second: Scene
+      74: 8349542763059015795
+    second: Armature|Walk
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -85,7 +82,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
@@ -104,7 +101,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
