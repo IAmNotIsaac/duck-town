@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1248440550028368501}
   - component: {fileID: 4350688397032810411}
   - component: {fileID: 6047172918773305518}
-  - component: {fileID: 4294568051072638892}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Untagged
@@ -76,27 +75,7 @@ MonoBehaviour:
   _exitPoint: {fileID: 0}
   _modelTransform: {fileID: 8121468618425408491}
   _eyesTransform: {fileID: 2450279108779233322}
-  _anim: {fileID: 0}
---- !u!95 &4294568051072638892
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5693704266658630298}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4828e74dfdf60724f8ce5e7f350e62ef, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  _anim: {fileID: 6907155091593423612}
 --- !u!1 &8742401759919695125
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,20 +258,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ccc494d506b70a94e8b9a52a50449573, type: 3}
   m_PrefabInstance: {fileID: 8592861288630582272}
   m_PrefabAsset: {fileID: 0}
---- !u!111 &8261960284268433019
-Animation:
+--- !u!95 &6907155091593423612
+Animator:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8934737046011560273}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 8349542763059015795, guid: ccc494d506b70a94e8b9a52a50449573, type: 3}
-  m_Animations:
-  - {fileID: -7551964380084998518, guid: ccc494d506b70a94e8b9a52a50449573, type: 3}
-  - {fileID: 8349542763059015795, guid: ccc494d506b70a94e8b9a52a50449573, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4828e74dfdf60724f8ce5e7f350e62ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

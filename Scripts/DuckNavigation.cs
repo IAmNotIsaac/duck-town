@@ -25,7 +25,7 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private Transform _modelTransform;
     [SerializeField] private Transform _eyesTransform;
-    [SerializeField] private Animation _anim;
+    [SerializeField] private Animator _anim;
 
     private NavState _navState = NavState.WANDER;
 
@@ -34,15 +34,8 @@ public class DuckNavigation : MonoBehaviour
     private float _targetAngle = 0.0f;
 
 
-    void Start()
-    {
-        _anim.Play("Armature|Walk");
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        Debug.Log(_navState);
         StateUpdate(_navState);
         FixFacingDirection();
     }
