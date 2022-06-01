@@ -70,6 +70,14 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.WANDER: {
+                // TODO: custom movement scheme
+                // ^^ move on step, not continuously.
+                // ^^ possible plan of action:
+                // ^^ 1) get next path point,
+                // ^^ 2) move in direction based on time since state,
+                // ^^ 3) profit.
+                // ^^ Do this for NavState.CHASE too.
+
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
@@ -160,7 +168,7 @@ public class DuckNavigation : MonoBehaviour
 
             case NavState.EXIT: {
                 _anim.Play("Base Layer.Run");
-                
+
                 _agent.destination = _exitPoint.position;
 
                 break;
