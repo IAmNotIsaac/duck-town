@@ -65,6 +65,15 @@ public class DuckNavigation : MonoBehaviour
                 }
                 _idleTime += Time.deltaTime;
 
+                RaycastHit hit;
+                if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
+                {
+                    if (hit.collider.GetComponent<PlayerController>())
+                    {
+                        SwitchState(NavState.CHASE);
+                    }
+                }
+
                 break;
             }
 
