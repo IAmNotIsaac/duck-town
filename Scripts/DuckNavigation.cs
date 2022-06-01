@@ -123,7 +123,6 @@ public class DuckNavigation : MonoBehaviour
             }
 
             case NavState.EXIT: {
-                _agent.destination = _exitPoint.position;
                 break;
             }
         }
@@ -132,10 +131,11 @@ public class DuckNavigation : MonoBehaviour
 
     void LoadState(NavState newState)
     {
-        Debug.Log(newState);
         switch (newState)
         {
             case NavState.IDLE: {
+                _anim.Play("Base Layer.Idle");
+
                 _idleTime = 0.0f;
 
                 break;
@@ -143,7 +143,25 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.WANDER: {
+                _anim.Play("Base Layer.Walk");
+
                 _agent.destination = _wanderPoints[_rnd.Next() % _wanderPoints.Length].position;
+
+                break;
+            }
+
+
+            case NavState.CHASE: {
+                _anim.Play("Base Layer.Run");
+
+                break;
+            }
+
+
+            case NavState.EXIT: {
+                _anim.Play("Base Layer.Run");
+                
+                _agent.destination = _exitPoint.position;
 
                 break;
             }
