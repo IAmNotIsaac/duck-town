@@ -27,6 +27,7 @@ public class AlarmDuck : MonoBehaviour
 
     void Update()
     {
+        FacePoint();
         switch (_state)
         {
             case State.TURN: {
@@ -36,10 +37,18 @@ public class AlarmDuck : MonoBehaviour
                     new Vector2(nextPoint.position.x, nextPoint.position.z)
                 );
 
-                transform.eulerAngles.y = Mathf.LerpAngle(transform.eulerAngles.y, targetAngle, 0.9f);
+                transform.eulerAngles = new Vector3(
+                    0.0f,
+                    Mathf.LerpAngle(transform.eulerAngles.y, targetAngle, 0.9f),
+                    0.0f
+                );
 
                 if (Mathf.Abs(targetAngle - transform.eulerAngles.y) < 5.0f) {
-                    transform.eulerAngles.y = targetAngle;
+                    transform.eulerAngles = new Vector3(
+                        0.0f,
+                        targetAngle,
+                        0.0f
+                    );
                     _state = State.PATROL;
                 }
 
@@ -48,12 +57,25 @@ public class AlarmDuck : MonoBehaviour
 
             case State.PATROL: {
                 Transform nextPoint = _pathPoints[_i % _pathPoints.Length];
-                
-                transform.position += transform.position - nextPoint.position;
+                Vector2 destination = new Vector2(
+                    nextPoint.position.x,
+                    nextPoint.position.z
+                );
+                Vector2 pos = new Vector2(
+                    transform.position.x,
+                    transform.position.z
+                );
+                Vector2 direction = (destination - pos).normalized;
+                Vector2 speed = direction * Time.deltaTime * _speed;
 
-                if (Vector3.Distance(transform.position, nextPoint) <= 0.1f)
+                transform.position += new Vector3(
+                    speed.x,
+                    0.0f,
+                    speed.y
+                );
+
+                if (Vector3.Distance(transform.position, nextPoint.position) <= 0.1f)
                 {
-                    Transform.position = nextPoint.position;
                     _i++;
                     
                     if (_turnMode == TurnMode.PAUSE)
@@ -76,5 +98,28 @@ public class AlarmDuck : MonoBehaviour
     {
         _stateTime = 0.0f;
         _state = newState;
+    }
+
+
+    void FacePoint()
+    {
+        Transform nextPoint = _pathPoints[_i % _pathPoints.Length];
+        Vector2 destination = new Vector2(
+            nextPoint.position.x,
+            nextPoint.position.z
+        );
+        Vector2 pos = new Vector2(
+            transform.position.x,
+            transform.position.z
+        );
+        Vector2 direction = (destination - pos).normalized;
+        
+        float targetAngle = Mathf.Atan2(direction.y - 0.0f, direction.x - 0.0f) * 180 / Mathf.PI;
+
+        transform.eulerAngles = new Vector3(
+            0.0f,
+            -targetAngle + 90.0f,
+            0.0f
+        );
     }
 }
