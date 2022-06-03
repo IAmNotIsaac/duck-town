@@ -17,9 +17,13 @@ public class AlarmDuck : MonoBehaviour
         ALARM
     }
 
+    [HideInInspector] public bool playerInViewArea = false;
+
     [SerializeField] private float _speed;
     [SerializeField] private Transform[] _pathPoints;
     [SerializeField] private TurnMode _turnMode = TurnMode.CONTINUOUS;
+    [SerializeField] private DuckNavigation _duck;
+    [SerializeField] private PlayerController _player;
     
     private State _state = State.PATROL;
     private int _i = 0;
@@ -49,7 +53,7 @@ public class AlarmDuck : MonoBehaviour
                         targetAngle,
                         0.0f
                     );
-                    _state = State.PATROL;
+                    SwitchState(State.PATROL);
                 }
 
                 break;
@@ -80,7 +84,16 @@ public class AlarmDuck : MonoBehaviour
                     
                     if (_turnMode == TurnMode.PAUSE)
                     {
-                        _state = State.TURN;
+                        SwitchState(State.TURN);
+                    }
+                }
+
+                RaycastHit hit;
+                if (Physics.Linecast(transform.position, _player.transform.position, out hit))
+                {
+                    if (hit.collider.GetComponent<PlayerController>() && playerInViewArea)
+                    {
+                        SwitchState(State.ALARM);
                     }
                 }
 
@@ -91,6 +104,20 @@ public class AlarmDuck : MonoBehaviour
                 break;
             }
         }
+
+        _stateTime += Time.deltaTime;
+    }
+
+
+    void LoadState(State state)
+    {
+        switch (state)
+        {
+            case State.ALARM: {
+                Debug.Log("player spotted!");
+                break;
+            }
+        }
     }
 
 
@@ -98,6 +125,8 @@ public class AlarmDuck : MonoBehaviour
     {
         _stateTime = 0.0f;
         _state = newState;
+
+        LoadState(newState);
     }
 
 
