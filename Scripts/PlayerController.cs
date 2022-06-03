@@ -28,20 +28,25 @@ public class PlayerController : MonoBehaviour
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
     const float ARM_REACH = 2.0f;
-
+    const float STEP_FREQUENCY = 0.75f;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
     [SerializeField] private RawImage _reticleHint;
     [SerializeField] private Image _waterOverlay;
     [SerializeField] private DuckNavigation duck;
+    [SerializeField] private AudioSource _jumpSound;
+    [SerializeField] private AudioSource[] _stepSounds;
+    [SerializeField] private AudioSource _climbSound;
     private Vector3 _playerVelocity;
     private PlayerState _state;
     private Vector2 _inputVector = Vector2.zero;
+    private System.Random _rnd = new System.Random();
 
     // state specific vars
     // DEFAULT
     private float _default_leaveGroundTime = 0.0f;
+    private float _default_stepSoundTimer = 0.0f;
 
     // WATER
     private Collider _water;
@@ -93,6 +98,23 @@ public class PlayerController : MonoBehaviour
 
                     var move = forward * speed.y + strafe * speed.x;
 
+                    if (_inputVector != Vector2.zero)
+                    {
+                        if (_default_stepSoundTimer >= STEP_FREQUENCY)
+                        {
+                            _default_stepSoundTimer = 0.0f;
+                            _stepSounds[_rnd.Next() % _stepSounds.Length].Play();
+                        }
+                    }
+
+                    else
+                    {
+                        foreach (AudioSource s in _stepSounds)
+                        {
+                            s.Stop();
+                        }
+                    }
+
                     _controller.Move(move * Time.deltaTime / 2.0f);
                 }
 
@@ -120,6 +142,7 @@ public class PlayerController : MonoBehaviour
                             {
                                 _default_leaveGroundTime = COYOTE_TIME;
                                 _playerVelocity.y = JUMP_FORCE;
+                                _jumpSound.Play();
                             }
                         }
                     }
@@ -163,6 +186,9 @@ public class PlayerController : MonoBehaviour
                 {
                     SwitchState(PlayerState.WATER);
                 }
+
+
+                _default_stepSoundTimer += Time.deltaTime;
 
 
                 break;
@@ -289,6 +315,13 @@ public class PlayerController : MonoBehaviour
     {
         switch (state)
         {
+            case PlayerState.DEFAULT: {
+                _default_stepSoundTimer = 0.0f;
+
+                break;
+            }
+
+
             case PlayerState.CLIMB_PREP: {
                 RaycastHit hit;
                 Physics.Raycast(transform.position - new Vector3(0.0f, 0.25f, 0.0f), transform.TransformDirection(Vector3.forward), out hit, 0.8f);
@@ -302,6 +335,8 @@ public class PlayerController : MonoBehaviour
                 Physics.Raycast(origin, Vector3.down, out hit);
 
                 _climbPrep_targetClimbHeight = hit.point.y;
+                
+                _climbSound.Play();
                 
                 break;
             }
@@ -323,6 +358,11 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.DEFAULT: {
                 _reticleHint.enabled = false;
+
+                foreach (AudioSource s in _stepSounds)
+                {
+                    s.Stop();
+                }
 
                 break;
             }
