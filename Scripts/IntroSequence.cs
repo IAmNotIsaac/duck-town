@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IntroSequence : MonoBehaviour
 {
@@ -13,8 +14,10 @@ public class IntroSequence : MonoBehaviour
     }
 
     const float PAUSE_TIME = 1.0f;
-    const float MONOLOGUE_TIME = 50.0f;
-    const float DOOR_TIME = 5.0f;
+    const float MONOLOGUE_TIME = 48.0f;
+    const float DOOR_TIME = 10.0f;
+    const float DOOR_CLOSE_TIME = 10.0f;
+    const int FIRST_LEVEL = 1;
 
     [SerializeField] private AudioSource _monologue;
     [SerializeField] private AudioSource _doorSound;
@@ -34,7 +37,7 @@ public class IntroSequence : MonoBehaviour
             case State.PAUSE: {
                 if (_stateTime > PAUSE_TIME)
                 {
-                    SwitchState(State.MONOLOGUE);
+                    SwitchState(State.DOOR);
                 }
                 
                 break;
@@ -55,6 +58,16 @@ public class IntroSequence : MonoBehaviour
                 if (_stateTime > DOOR_TIME)
                 {
                     SwitchState(State.DOOR_CLOSE);
+                }
+
+                break;
+            }
+
+
+            case State.DOOR_CLOSE: {
+                if (_stateTime > DOOR_CLOSE_TIME)
+                {
+                    SceneManager.LoadScene(FIRST_LEVEL);
                 }
 
                 break;
