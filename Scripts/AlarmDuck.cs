@@ -17,6 +17,8 @@ public class AlarmDuck : MonoBehaviour
         ALARM
     }
 
+    const float ALARM_TIME = 4.0f;
+
     [HideInInspector] public bool playerInViewArea = false;
 
     [SerializeField] private float _speed;
@@ -101,6 +103,11 @@ public class AlarmDuck : MonoBehaviour
             }
 
             case State.ALARM: {
+                if (_stateTime >= ALARM_TIME)
+                {
+                    SwitchState(State.PATROL);
+                }
+
                 break;
             }
         }
@@ -114,7 +121,8 @@ public class AlarmDuck : MonoBehaviour
         switch (state)
         {
             case State.ALARM: {
-                Debug.Log("player spotted!");
+                _duck.SwitchState(DuckNavigation.NavState.ALERT);
+
                 break;
             }
         }
@@ -147,7 +155,7 @@ public class AlarmDuck : MonoBehaviour
 
         transform.eulerAngles = new Vector3(
             0.0f,
-            -targetAngle + 90.0f,
+            Mathf.LerpAngle(transform.eulerAngles.y, -targetAngle + 90.0f, 0.9f),
             0.0f
         );
     }
