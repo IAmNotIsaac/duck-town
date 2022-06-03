@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="cracking noise 2_data" version="1.3.0" audacityversion="2.1.2" sel0="0.0999135179" sel1="20.8319713410" vpos="0" h="0.0000000000" zoom="90.0779012765" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<wavetrack name="cracking noise" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.4">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="924565">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000f16.au" len="4406" min="-0.007566" max="0.00712" rms="0.000528"/>
+				</waveblock>
+				<waveblock start="4406">
+					<simpleblockfile filename="e0000e5c.au" len="230039" min="-0.989546" max="1.01809" rms="0.083266"/>
+				</waveblock>
+				<waveblock start="234445">
+					<simpleblockfile filename="e0000f89.au" len="230040" min="-0.999999" max="0.948184" rms="0.065986"/>
+				</waveblock>
+				<waveblock start="464485">
+					<simpleblockfile filename="e00000a0.au" len="230040" min="-0.780012" max="0.811499" rms="0.045115"/>
+				</waveblock>
+				<waveblock start="694525">
+					<simpleblockfile filename="e00007eb.au" len="230040" min="-0.674593" max="0.665809" rms="0.041056"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>
