@@ -47,8 +47,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource _doorCloseSound;
     [SerializeField] private PlayableDirector _levelExitFade;
     [SerializeField] private PlayableDirector _levelEnterFade;
+    [HideInInspector] public PlayerState state;
     private Vector3 _playerVelocity;
-    private PlayerState _state;
     private Vector2 _inputVector = Vector2.zero;
     private System.Random _rnd = new System.Random();
 
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis("Vertical")
         );
         // _inputVector.Normalize();
-        StateUpdate(_state);
+        StateUpdate(state);
     }
 
 
@@ -548,8 +548,8 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchState(PlayerState newState)
     {
-        var lastState = _state;
-        _state = newState;
+        var lastState = state;
+        state = newState;
 
         UnloadState(lastState);
         LoadState(newState);

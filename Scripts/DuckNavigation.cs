@@ -255,7 +255,10 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.CLAW: {
-                _claw.Launch(_player.transform.position);
+                if (_player.state != PlayerController.PlayerState.CLIMB && _player.state != PlayerController.PlayerState.CLIMB_PREP)
+                {
+                    _claw.Launch(_player.transform.position);
+                }
 
                 break;
             }
