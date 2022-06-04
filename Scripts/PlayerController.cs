@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     const float MAX_HEALTH = 3.0f;
     const float HEAL_SPEED = 0.1f;
     const float DAMAGE_AMOUNT = 1.0f;
+    const float DAMAGE_COOLDOWN = 0.5f;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
@@ -55,7 +56,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private Vector2 _inputVector = Vector2.zero;
     private System.Random _rnd = new System.Random();
-    private float _health = -10.0f;
+    private float _health = MAX_HEALTH;
+    private float _damageCooldown = 0.0f;
 
     // state specific vars
     // DEFAULT
@@ -100,11 +102,15 @@ public class PlayerController : MonoBehaviour
 
     public void Damage()
     {
-        _health -= DAMAGE_AMOUNT;
-
-        if (_health <= 0.0f)
+        if (_damageCooldown <= 0.0f)
         {
-            Debug.Log("you died");
+            _damageCooldown = DAMAGE_COOLDOWN;
+            _health -= DAMAGE_AMOUNT;
+
+            if (_health <= 0.0f)
+            {
+                Debug.Log("you died");
+            }
         }
     }
 
@@ -123,7 +129,8 @@ public class PlayerController : MonoBehaviour
 
     void Health()
     {
-        _health += Mathf.Min(_health + HEAL_SPEED * Time.deltaTime, MAX_HEALTH);
+        _damageCooldown -= Time.deltaTime;
+        _health = Mathf.Clamp(_health + HEAL_SPEED * Time.deltaTime, 0.0f, MAX_HEALTH);
         _damageVignette.color = new Color(
             1.0f,
             1.0f,

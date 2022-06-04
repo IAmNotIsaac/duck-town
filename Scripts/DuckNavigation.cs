@@ -322,4 +322,13 @@ public class DuckNavigation : MonoBehaviour
 
         LoadState(newState);
     }
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerController>())
+        {
+            _player.Damage();
+        }
+    }
 }

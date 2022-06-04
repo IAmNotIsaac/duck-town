@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 1248440550028368501}
   - component: {fileID: 4350688397032810411}
   - component: {fileID: 6047172918773305518}
+  - component: {fileID: 5797703646507600831}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Untagged
@@ -139,6 +140,19 @@ MonoBehaviour:
   _anim: {fileID: 6907155091593423612}
   _claw: {fileID: 4431531376835567682}
   playerInViewArea: 0
+--- !u!65 &5797703646507600831
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693704266658630298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 4, z: 1}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &7142224148692304590
 GameObject:
   m_ObjectHideFlags: 0
