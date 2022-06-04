@@ -144,13 +144,18 @@ public class DuckNavigation : MonoBehaviour
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit) && hit.collider.GetComponent<PlayerController>())
                 {
                     _agent.destination = _player.transform.position;
-                    var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
 
-                    if (Vector3.Distance(transform.position, _player.transform.position) < Claw.MAX_CHAIN_COUNT * Claw.NEW_CHAIN_DISTANCE && (
-                        _player.transform.position.x != lastPoint.x ||
-                        _player.transform.position.z != lastPoint.z ))
+                    // for some reason we have to add this and im just too tired to figure out why right now oh well
+                    if (_agent.path.corners.Length > 1)
                     {
-                        SwitchState(NavState.CLAW);
+                        var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
+
+                        if (Vector3.Distance(transform.position, _player.transform.position) < Claw.MAX_CHAIN_COUNT * Claw.NEW_CHAIN_DISTANCE && (
+                            _player.transform.position.x != lastPoint.x ||
+                            _player.transform.position.z != lastPoint.z ))
+                        {
+                            SwitchState(NavState.CLAW);
+                        }
                     }
                 }
 
