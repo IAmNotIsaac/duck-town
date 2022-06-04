@@ -117,7 +117,7 @@ public class Claw : MonoBehaviour
         {
             case State.UNLAUNCHED: {
                 _clawHead.transform.localPosition = Vector3.zero;
-                _clawHead.enabled = false;
+                _clawHead.SetActive(false);
 
                 if (_player)
                 {
@@ -131,7 +131,7 @@ public class Claw : MonoBehaviour
             case State.LAUNCHING: {
                 _chainCount = 0;
                 _launchTime = 0.0f;
-                _clawHead.enabled = true;
+                _clawHead.SetActive(true);
 
                 break;
             }
