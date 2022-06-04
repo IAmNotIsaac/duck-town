@@ -182,6 +182,7 @@ public class DuckNavigation : MonoBehaviour
                 if (_checkLocs.Count == 0)
                 {
                     SwitchState(NavState.WANDER);
+                    break;
                 }
 
                 _agent.destination = _checkLocs[0];
