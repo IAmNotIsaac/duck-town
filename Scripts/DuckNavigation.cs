@@ -34,6 +34,7 @@ public class DuckNavigation : MonoBehaviour
     private System.Random _rnd = new System.Random();
     private float _targetAngle = 0.0f;
     private bool _exitOpen = false;
+    private List<Vector3> _checkLocs = new List<Vector3>();
 
 
     void Update()
@@ -135,7 +136,7 @@ public class DuckNavigation : MonoBehaviour
                     // We're nearby our destination, but we don't see the player.
                     if (Vector3.Distance(_agent.destination, transform.position) < 1.0f)
                     {
-                        SwitchState(NavState.WANDER);
+                        SwitchState(NavState.CHECK);
                     }
                 }
 
@@ -143,6 +144,18 @@ public class DuckNavigation : MonoBehaviour
             }
 
             case NavState.CHECK: {
+                if (_checkLocs.Count == 0)
+                {
+                    SwitchState(NavState.WANDER);
+                }
+
+                _agent.destination = _checkLocs[0];
+
+                if (Vector3.Distance(_agent.destination, _eyesTransform.position) < 1.0f)
+                {
+                    _checkLocs.RemoveAt(0);
+                }
+
                 break;
             }
 
@@ -204,7 +217,28 @@ public class DuckNavigation : MonoBehaviour
             }
 
 
+            case NavState.CHECK: {
+                _anim.Play("Base Layer.Run");
+
+                var locCount = (int)Mathf.Max(2, _rnd.Next() % 6.0f);
+                
+                for (int i = 0; i < locCount; i++)
+                {
+                    Vector3 randomPoint = Random.insideUnitSphere * 8.0f;
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+                    {
+                        _checkLocs.Add(hit.position);
+                    }
+                }
+
+                break;
+            }
+
+
             case NavState.ALERT: {
+                _anim.Play("Base Layer.Run");
+
                 _agent.destination = _player.transform.position;
 
                 break;
