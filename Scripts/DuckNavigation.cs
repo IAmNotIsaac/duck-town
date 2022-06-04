@@ -197,7 +197,7 @@ public class DuckNavigation : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
-                    if (hit.collider.GetComponent<PlayerController>())
+                    if (hit.collider.GetComponent<PlayerController>() && playerInViewArea)
                     {
                         SwitchState(NavState.CHASE);
                     }
