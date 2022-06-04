@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
     const float COYOTE_TIME = 0.2f;
     const float ARM_REACH = 2.0f;
     const float STEP_FREQUENCY = 0.75f;
+    const float MAX_HEALTH = 3.0f;
+    const float HEAL_SPEED = 0.1f;
+    const float DAMAGE_AMOUNT = 1.0f;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
@@ -47,10 +50,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource _doorCloseSound;
     [SerializeField] private PlayableDirector _levelExitFade;
     [SerializeField] private PlayableDirector _levelEnterFade;
+    [SerializeField] private RawImage _damageVignette;
     [HideInInspector] public PlayerState state;
     private Vector3 _playerVelocity;
     private Vector2 _inputVector = Vector2.zero;
     private System.Random _rnd = new System.Random();
+    private float _health = -10.0f;
 
     // state specific vars
     // DEFAULT
@@ -93,6 +98,17 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public void Damage()
+    {
+        _health -= DAMAGE_AMOUNT;
+
+        if (_health <= 0.0f)
+        {
+            Debug.Log("you died");
+        }
+    }
+
+
     void Update()
     {
         _inputVector = new Vector2(
@@ -101,6 +117,19 @@ public class PlayerController : MonoBehaviour
         );
         // _inputVector.Normalize();
         StateUpdate(state);
+        Health();
+    }
+
+
+    void Health()
+    {
+        _health += Mathf.Min(_health + HEAL_SPEED * Time.deltaTime, MAX_HEALTH);
+        _damageVignette.color = new Color(
+            1.0f,
+            1.0f,
+            1.0f,
+            1.0f - _health / MAX_HEALTH
+        );
     }
 
 
