@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,11 @@ public class PlayerController : MonoBehaviour
         DEFAULT,
         WATER,
         CLIMB_PREP,
-        CLIMB
+        CLIMB,
+        HESITATE,
+        DOOR_SOUND,
+        LEVEL_EXIT,
+        LEVEL_ENTER
     }
 
     const float GRAVITY = 20.0f;
@@ -38,6 +43,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource _jumpSound;
     [SerializeField] private AudioSource[] _stepSounds;
     [SerializeField] private AudioSource _climbSound;
+    [SerializeField] private AudioSource _doorCloseSound;
+    [SerializeField] private PlayableDirector _levelExitFade;
+    [SerializeField] private PlayableDirector _levelEnterFade;
     private Vector3 _playerVelocity;
     private PlayerState _state;
     private Vector2 _inputVector = Vector2.zero;
@@ -60,10 +68,24 @@ public class PlayerController : MonoBehaviour
     // CLIMB
     private float _climb_startTime = 0.0f;
 
+    // HESITATE
+    private float _hesitate_startTime = 0.0f;
+
+    // DOOR_SOUND
+    private float _doorSound_startTime = 0.0f;
+
+    // LEVEL_EXIT
+    private float _loadLevel_startTime = 0.0f;
+    private int _nextLevelID = 0;
+
+    // LEVEL_ENTER
+    private float _levelEnter_startTime = 0.0f;
+
 
     void Start()
     {
         GlobalData.LockMouse();
+        SwitchState(PlayerState.HESITATE);
     }
 
 
@@ -307,6 +329,50 @@ public class PlayerController : MonoBehaviour
                 
                 break;
             }
+
+
+            case PlayerState.HESITATE: {
+                if (_hesitate_startTime > 1.0f)
+                {
+                    SwitchState(PlayerState.DOOR_SOUND);
+                }
+                _hesitate_startTime += Time.deltaTime;
+                
+                break;
+            }
+
+
+            case PlayerState.DOOR_SOUND: {
+                if (_doorSound_startTime > 3.5f)
+                {
+                    SwitchState(PlayerState.LEVEL_ENTER);
+                }
+                _doorSound_startTime += Time.deltaTime;
+
+                break;
+            }
+
+
+            case PlayerState.LEVEL_EXIT: {
+                if (_loadLevel_startTime > 1.0f)
+                {
+                    SceneManager.LoadScene(_nextLevelID);
+                }
+                _loadLevel_startTime += Time.deltaTime;
+
+                break;
+            }
+
+
+            case PlayerState.LEVEL_ENTER: {
+                if (_levelEnter_startTime > 2.0f)
+                {
+                    SwitchState(PlayerState.DEFAULT);
+                }
+                _levelEnter_startTime += Time.deltaTime;
+
+                break;
+            }
         }
     }
 
@@ -345,6 +411,37 @@ public class PlayerController : MonoBehaviour
             case PlayerState.CLIMB: {
                 _cameraDirector.Play();
                 _climb_startTime = Time.time;
+
+                break;
+            }
+
+
+            case PlayerState.HESITATE: {
+                _hesitate_startTime = 0.0f;
+
+                break;
+            }
+
+
+            case PlayerState.DOOR_SOUND: {
+                _doorSound_startTime = 0.0f;
+                _doorCloseSound.Play();
+
+                break;
+            }
+
+
+            case PlayerState.LEVEL_EXIT: {
+                _loadLevel_startTime = 0.0f;
+                _levelExitFade.Play();
+
+                break;
+            }
+
+
+            case PlayerState.LEVEL_ENTER: {
+                _levelEnter_startTime = 0.0f;
+                _levelEnterFade.Play();
 
                 break;
             }
@@ -466,5 +563,12 @@ public class PlayerController : MonoBehaviour
         {
             _water = null;
         }
+    }
+
+
+    public void SwitchLevel(int nextLevelID)
+    {
+        _nextLevelID = nextLevelID;
+        SwitchState(PlayerState.LEVEL_EXIT);
     }
 }
