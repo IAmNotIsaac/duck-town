@@ -14,7 +14,8 @@ public class DuckNavigation : MonoBehaviour
         CHASE,              // go to player's last seen location
         CHECK,              // we lost player, look around area
         ALERT,              // go to alert location
-        EXIT                // go to level exit
+        EXIT,               // go to level exit,
+        CLAW                // launch claw at player
     }
 
     private const float IDLE_WANDER_TIME = 2.0f;
@@ -128,6 +129,13 @@ public class DuckNavigation : MonoBehaviour
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit) && hit.collider.GetComponent<PlayerController>())
                 {
                     _agent.destination = _player.transform.position;
+                    var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
+
+                    if (_player.transform.position.x != lastPoint.x ||
+                        _player.transform.position.z != lastPoint.z )
+                    {
+                        SwitchState(NavState.CLAW);
+                    }
                 }
 
                 // Player is not in view

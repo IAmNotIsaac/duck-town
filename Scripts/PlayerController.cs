@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
         HESITATE,
         DOOR_SOUND,
         LEVEL_EXIT,
-        LEVEL_ENTER
+        LEVEL_ENTER,
+        REEL
     }
 
     const float GRAVITY = 20.0f;
@@ -80,6 +81,9 @@ public class PlayerController : MonoBehaviour
 
     // LEVEL_ENTER
     private float _levelEnter_startTime = 0.0f;
+
+    // REEL
+    private Transform _reel_ogParent;
 
 
     void Start()
@@ -373,6 +377,13 @@ public class PlayerController : MonoBehaviour
 
                 break;
             }
+
+
+            case PlayerState.REEL: {
+                // DefaultCameraMovement();
+
+                break;
+            }
         }
     }
 
@@ -508,6 +519,16 @@ public class PlayerController : MonoBehaviour
 
                 break;
             };
+
+
+            case PlayerState.REEL: {
+                var move = _camera.transform.position - transform.position - new Vector3(0.0f, CAMERA_HEIGHT, 0.0f);
+
+                _controller.Move(move);
+                _camera.transform.SetParent(transform);
+
+                break;
+            }
         }
     }
 
@@ -570,5 +591,18 @@ public class PlayerController : MonoBehaviour
     {
         _nextLevelID = nextLevelID;
         SwitchState(PlayerState.LEVEL_EXIT);
+    }
+
+
+    public void ClawReel(Transform reparent)
+    {
+        SwitchState(PlayerState.REEL);
+        _camera.transform.SetParent(reparent.transform);
+    }
+
+
+    public void ClawFree()
+    {
+        SwitchState(PlayerState.DEFAULT);
     }
 }
