@@ -279,11 +279,11 @@ public class DuckNavigation : MonoBehaviour
             case NavState.CHECK: {
                 _anim.Play("Base Layer.Run");
 
-                var locCount = (int)Mathf.Max(2, _rnd.Next() % 6.0f);
+                var locCount = (int)Mathf.Max(2, _rnd.Next() % 4.0f);
                 
                 for (int i = 0; i < locCount; i++)
                 {
-                    Vector3 randomPoint = Random.insideUnitSphere * 8.0f;
+                    Vector3 randomPoint = Random.insideUnitSphere * 2.0f;
                     NavMeshHit hit;
                     if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
                     {
