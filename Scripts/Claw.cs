@@ -63,11 +63,6 @@ public class Claw : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            Launch(new Vector3(0.0f, 1.0f, 0.0f));
-        }
-
         switch (state)
         {
             case State.LAUNCHING: {
