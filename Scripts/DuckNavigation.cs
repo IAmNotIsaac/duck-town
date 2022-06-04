@@ -33,6 +33,7 @@ public class DuckNavigation : MonoBehaviour
     private float _idleTime = 0.0f;
     private System.Random _rnd = new System.Random();
     private float _targetAngle = 0.0f;
+    private bool _exitOpen = false;
 
 
     void Update()
@@ -74,6 +75,11 @@ public class DuckNavigation : MonoBehaviour
                     }
                 }
 
+                if (_exitOpen)
+                {
+                    SwitchState(NavState.EXIT);
+                }
+
                 break;
             }
 
@@ -105,6 +111,11 @@ public class DuckNavigation : MonoBehaviour
                 if (Vector3.Distance(_agent.destination, transform.position) < 1.0f)
                 {
                     SwitchState(NavState.IDLE);
+                }
+
+                if (_exitOpen)
+                {
+                    SwitchState(NavState.EXIT);
                 }
 
                 break;
@@ -157,7 +168,7 @@ public class DuckNavigation : MonoBehaviour
                         SwitchState(NavState.CHASE);
                     }
                 }
-                
+
                 break;
             }
         }
@@ -204,6 +215,7 @@ public class DuckNavigation : MonoBehaviour
                 _anim.Play("Base Layer.Run");
 
                 _agent.destination = _exitPoint.position;
+                _exitOpen = true;
 
                 break;
             }
