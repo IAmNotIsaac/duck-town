@@ -11,8 +11,8 @@ public class Claw : MonoBehaviour
         REEL
     }
 
-    const int MAX_CHAIN_COUNT = 10;
-    const float NEW_CHAIN_DISTANCE = 0.75f;
+    public const int MAX_CHAIN_COUNT = 10;
+    public const float NEW_CHAIN_DISTANCE = 0.75f;
     const float CLAW_SPEED = 20.0f;
 
     [SerializeField] private GameObject _chainPiece;

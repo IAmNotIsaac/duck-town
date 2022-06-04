@@ -524,21 +524,15 @@ public class PlayerController : MonoBehaviour
             case PlayerState.REEL: {
                 // var move = _camera.transform.position - transform.position - new Vector3(0.0f, CAMERA_HEIGHT, 0.0f);
                 var destination = _camera.transform.position - new Vector3(0.0f, CAMERA_HEIGHT, 0.0f);
-                Vector3 move;
+                Vector3 move = Vector3.zero;
 
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, destination, out hit))
-                {
-                    move = transform.position - hit.point;
-                }
-
-                else
-                {
-                    move = transform.position - destination;
-                }
+                Physics.Raycast(transform.position, destination, out hit);
+                move = hit.point - transform.position;
+                _camera.transform.SetParent(transform);
+                _camera.transform.localPosition = new Vector3(0.0f, CAMERA_HEIGHT, 0.0f);
 
                 _controller.Move(move);
-                _camera.transform.SetParent(transform);
 
                 break;
             }

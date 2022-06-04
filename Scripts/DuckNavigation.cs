@@ -146,7 +146,7 @@ public class DuckNavigation : MonoBehaviour
                     _agent.destination = _player.transform.position;
                     var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
 
-                    if (Vector3.Distance(transform.position, lastPoint) < 1.0f && (
+                    if (Vector3.Distance(transform.position, _player.transform.position) < Claw.MAX_CHAIN_COUNT * Claw.NEW_CHAIN_DISTANCE && (
                         _player.transform.position.x != lastPoint.x ||
                         _player.transform.position.z != lastPoint.z ))
                     {
