@@ -365,7 +365,7 @@ public class PlayerController : MonoBehaviour
 
 
             case PlayerState.LEVEL_ENTER: {
-                if (_levelEnter_startTime > 2.0f)
+                if (_levelEnter_startTime > 1.2f)
                 {
                     SwitchState(PlayerState.DEFAULT);
                 }
