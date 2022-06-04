@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 5231726919104732754}
   _camera: {fileID: 2699417510334677611}
-  _cameraDirector: {fileID: 5057889750055250646}
+  _cameraDirector: {fileID: 0}
   _reticleHint: {fileID: 4911602154276014646}
   _waterOverlay: {fileID: 5788938272357773244}
   duck: {fileID: 0}
@@ -1123,8 +1123,8 @@ GameObject:
   - component: {fileID: 987663785390767078}
   - component: {fileID: 2699417510334677611}
   - component: {fileID: 4719313763937352159}
-  - component: {fileID: 5057889750055250646}
-  - component: {fileID: 922038106329128401}
+  - component: {fileID: 5607829094514605642}
+  - component: {fileID: 4861267543505960421}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1198,7 +1198,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8813646354045227249}
   m_Enabled: 1
---- !u!320 &5057889750055250646
+--- !u!320 &5607829094514605642
 PlayableDirector:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1208,16 +1208,16 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: a5c82e5d0541b0f4a8b28757a5c19a4b, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -5567579585220058428, guid: a5c82e5d0541b0f4a8b28757a5c19a4b, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 4861267543505960421}
   m_ExposedReferences:
     m_References: []
---- !u!95 &922038106329128401
+--- !u!95 &4861267543505960421
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
