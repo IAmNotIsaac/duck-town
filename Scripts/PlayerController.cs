@@ -34,7 +34,9 @@ public class PlayerController : MonoBehaviour
     const float CAMERA_HEIGHT = 0.5f;
     const float COYOTE_TIME = 0.2f;
     const float ARM_REACH = 2.0f;
-    const float STEP_FREQUENCY = 0.75f;
+    const float STEP_FREQUENCY = 0.5f;
+    const float WATER_STEP_FREQUENCY = 1.0f;
+    const float WATER_SWIM_FREQUENCY = 0.75f;
     const float MAX_HEALTH = 3.0f;
     const float HEAL_SPEED = 0.1f;
     const float DAMAGE_AMOUNT = 1.0f;
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private DuckNavigation duck;
     [SerializeField] private AudioSource _jumpSound;
     [SerializeField] private AudioSource[] _stepSounds;
+    [SerializeField] private AudioSource[] _waterStepSounds;
+    [SerializeField] private AudioSource[] _underwaterStepSounds;
     [SerializeField] private AudioSource _climbSound;
     [SerializeField] private AudioSource _doorCloseSound;
     [SerializeField] private PlayableDirector _levelExitFade;
@@ -66,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
     // WATER
     private Collider _water;
+    private float _water_stepSoundTimer = 0.0f;
 
     // CLIMB_PREP
     private float _climbPrep_targetAngle = 0.0f;
@@ -291,6 +296,16 @@ public class PlayerController : MonoBehaviour
 
                     var move = forward * speed.y + strafe * speed.x;
 
+                    if (_inputVector != Vector2.zero && !headUnderwater)
+                    {
+                        if (_water_stepSoundTimer >= WATER_STEP_FREQUENCY)
+                        {
+                            _water_stepSoundTimer = 0.0f;
+                            _waterStepSounds[_rnd.Next() % _waterStepSounds.Length].Play();
+                        }
+                    }
+                    _water_stepSoundTimer += Time.deltaTime;
+
                     _controller.Move(move * Time.deltaTime / 2.0f);
                 }
 
@@ -306,6 +321,16 @@ public class PlayerController : MonoBehaviour
                     if (headUnderwater)
                     {
                         _playerVelocity.y += Input.GetAxis("Jump") * SWIM_ACCELERATION;
+
+                        if (_inputVector != Vector2.zero)
+                        {
+                            if (_water_stepSoundTimer >= WATER_SWIM_FREQUENCY)
+                            {
+                                _water_stepSoundTimer = 0.0f;
+                                _underwaterStepSounds[_rnd.Next() % _underwaterStepSounds.Length].Play();
+                            }
+                        }
+                        _water_stepSoundTimer += Time.deltaTime;
                     }
 
                     _playerVelocity.y = Mathf.Clamp(_playerVelocity.y - WATER_GRAVITY * Time.deltaTime, -VERTICAL_SWIM_SPEED, VERTICAL_SWIM_SPEED / 2.0f);
@@ -451,6 +476,13 @@ public class PlayerController : MonoBehaviour
                 
                 _climbSound.Play();
                 
+                break;
+            }
+
+
+            case PlayerState.WATER: {
+                _water_stepSoundTimer = 0.0f;
+
                 break;
             }
 
