@@ -143,7 +143,7 @@ public class DuckNavigation : MonoBehaviour
                     _agent.destination = _player.transform.position;
 
                     // for some reason we have to add this and im just too tired to figure out why right now oh well
-                    if (_agent.path.corners.Length > 1)
+                    if (_agent.path.corners.Length > 1 && false == true) // temporarily deprecated, possibly forever
                     {
                         var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
 
