@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 public class DuckNavigation : MonoBehaviour
 {
     public enum NavState {
+        START_PAUSE,        // pause at start to give player to load in
         IDLE,               // no move dawg
         WANDER,             // go to random location
         CHASE,              // go to player's last seen location
@@ -28,10 +29,12 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Transform _modelTransform;
     [SerializeField] private Transform _eyesTransform;
     [SerializeField] private Animator _anim;
+    [SerializeField] private Claw _claw;
 
-    private NavState _navState = NavState.IDLE;
+    private NavState _navState = NavState.START_PAUSE;
 
     private float _idleTime = 0.0f;
+    private float _startTime = 0.0f;
     private System.Random _rnd = new System.Random();
     private float _targetAngle = 0.0f;
     private bool _exitOpen = false;
@@ -61,6 +64,17 @@ public class DuckNavigation : MonoBehaviour
     void StateUpdate(NavState state)
     {
         switch (_navState) {
+            case NavState.START_PAUSE: {
+                if (_startTime >= 2.5f)
+                {
+                    SwitchState(NavState.WANDER);
+                }
+                _startTime += Time.deltaTime;
+
+                break;
+            }
+
+
             case NavState.IDLE: {
                 if (_idleTime >= IDLE_WANDER_TIME)
                 {
@@ -123,6 +137,7 @@ public class DuckNavigation : MonoBehaviour
                 break;
             }
 
+
             case NavState.CHASE: {
                 // We only want the duck to go to the player's last known location
                 RaycastHit hit;
@@ -131,8 +146,9 @@ public class DuckNavigation : MonoBehaviour
                     _agent.destination = _player.transform.position;
                     var lastPoint = _agent.path.corners[_agent.path.corners.Length - 1];
 
-                    if (_player.transform.position.x != lastPoint.x ||
-                        _player.transform.position.z != lastPoint.z )
+                    if (Vector3.Distance(transform.position, lastPoint) < 1.0f && (
+                        _player.transform.position.x != lastPoint.x ||
+                        _player.transform.position.z != lastPoint.z ))
                     {
                         SwitchState(NavState.CLAW);
                     }
@@ -151,6 +167,17 @@ public class DuckNavigation : MonoBehaviour
                 break;
             }
 
+
+            case NavState.CLAW: {
+                if (_claw.state == Claw.State.UNLAUNCHED)
+                {
+                    SwitchState(NavState.CHASE);
+                }
+
+                break;
+            }
+
+
             case NavState.CHECK: {
                 if (_checkLocs.Count == 0)
                 {
@@ -167,6 +194,7 @@ public class DuckNavigation : MonoBehaviour
                 break;
             }
 
+
             case NavState.ALERT: {
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
@@ -179,6 +207,7 @@ public class DuckNavigation : MonoBehaviour
                 
                 break;
             }
+
 
             case NavState.EXIT: {
                 RaycastHit hit;
@@ -220,6 +249,13 @@ public class DuckNavigation : MonoBehaviour
 
             case NavState.CHASE: {
                 _anim.Play("Base Layer.Run");
+
+                break;
+            }
+
+
+            case NavState.CLAW: {
+                _claw.Launch(_player.transform.position);
 
                 break;
             }

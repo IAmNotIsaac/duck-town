@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Claw : MonoBehaviour
 {
-    enum State
+    public enum State
     {
         UNLAUNCHED,
         LAUNCHING,
@@ -13,12 +13,12 @@ public class Claw : MonoBehaviour
 
     const int MAX_CHAIN_COUNT = 10;
     const float NEW_CHAIN_DISTANCE = 0.75f;
-    const float CLAW_SPEED = 25.0f;
+    const float CLAW_SPEED = 20.0f;
 
     [SerializeField] private GameObject _chainPiece;
     [SerializeField] private GameObject _clawHead;
     
-    private State _state = State.UNLAUNCHED;
+    [HideInInspector] public State state = State.UNLAUNCHED;
     private int _chainCount = 0;
     private Vector3 _direction;
     private GameObject _lastChain;
@@ -35,7 +35,7 @@ public class Claw : MonoBehaviour
 
     public void HitSomething(Collider what)
     {
-        if (_state == State.LAUNCHING)
+        if (state == State.LAUNCHING)
         {
             _player = what.GetComponent<PlayerController>();
 
@@ -52,7 +52,7 @@ public class Claw : MonoBehaviour
 
     public void Launch(Vector3 target)
     {
-        if (_state == State.UNLAUNCHED)
+        if (state == State.UNLAUNCHED)
         {
             _direction = Vector3.Normalize(target - transform.position);
 
@@ -68,7 +68,7 @@ public class Claw : MonoBehaviour
             Launch(new Vector3(0.0f, 1.0f, 0.0f));
         }
 
-        switch (_state)
+        switch (state)
         {
             case State.LAUNCHING: {
                 _clawHead.transform.position += _direction * CLAW_SPEED * Time.deltaTime;
@@ -148,7 +148,7 @@ public class Claw : MonoBehaviour
 
     void SwitchState(State newState)
     {
-        _state = newState;
+        state = newState;
 
         LoadState(newState);
     }
