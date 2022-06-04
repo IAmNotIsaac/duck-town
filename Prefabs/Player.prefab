@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 5231726919104732754}
   _camera: {fileID: 2699417510334677611}
-  _cameraDirector: {fileID: 0}
+  _cameraDirector: {fileID: 5607829094514605642}
   _reticleHint: {fileID: 4911602154276014646}
   _waterOverlay: {fileID: 5788938272357773244}
   duck: {fileID: 0}
