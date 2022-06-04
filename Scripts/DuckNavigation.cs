@@ -66,7 +66,7 @@ public class DuckNavigation : MonoBehaviour
     {
         switch (_navState) {
             case NavState.START_PAUSE: {
-                if (_startTime >= 2.5f)
+                if (_startTime >= 3.5f)
                 {
                     SwitchState(NavState.WANDER);
                 }
