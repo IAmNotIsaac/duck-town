@@ -31,8 +31,9 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Animator _anim;
     [SerializeField] private Claw _claw;
 
-    private NavState _navState = NavState.START_PAUSE;
+    [HideInInspector] public bool playerInViewArea = false;
 
+    private NavState _navState = NavState.START_PAUSE;
     private float _idleTime = 0.0f;
     private float _startTime = 0.0f;
     private System.Random _rnd = new System.Random();
@@ -85,7 +86,7 @@ public class DuckNavigation : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
-                    if (hit.collider.GetComponent<PlayerController>())
+                    if (hit.collider.GetComponent<PlayerController>() && playerInViewArea)
                     {
                         SwitchState(NavState.CHASE);
                     }
@@ -112,12 +113,8 @@ public class DuckNavigation : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
-                    if (hit.collider.GetComponent<PlayerController>())
+                    if (hit.collider.GetComponent<PlayerController>() && playerInViewArea)
                     {
-                        // TODO: potential angle check?
-                        // ^^ currently it works as the line collides with the duck's body, though
-                        // ^^ something to look into and consider.
-
                         SwitchState(NavState.CHASE);
                     }
                 }
@@ -196,6 +193,15 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _checkLocs.RemoveAt(0);
                 }
+                
+                RaycastHit hit;
+                if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
+                {
+                    if (hit.collider.GetComponent<PlayerController>())
+                    {
+                        SwitchState(NavState.CHASE);
+                    }
+                }
 
                 break;
             }
@@ -219,7 +225,7 @@ public class DuckNavigation : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
-                    if (hit.collider.GetComponent<PlayerController>())
+                    if (hit.collider.GetComponent<PlayerController>() && playerInViewArea)
                     {
                         SwitchState(NavState.CHASE);
                     }
