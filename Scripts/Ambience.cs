@@ -19,9 +19,6 @@ public class Ambience : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        // foreach (AudioSource a in _music) { DontDestroyOnLoad(a.gameObject); }
-        // foreach (AudioSource a in _screams) { DontDestroyOnLoad(a.gameObject); }
     }
 
 
