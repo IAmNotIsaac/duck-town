@@ -199,7 +199,7 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _stepTime = 0.0f;
                     var r = _rnd.Next() % (_stepSounds.Length - 1);
-                    Debug.Log(r);
+                    
                     _stepSounds[r].Play();
                 }
                 _stepTime += Time.deltaTime;
@@ -246,7 +246,7 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _stepTime = 0.0f;
                     var r = _rnd.Next() % (_stepSounds.Length - 1);
-                    Debug.Log(r);
+                    
                     _stepSounds[r].Play();
                 }
                 _stepTime += Time.deltaTime;
@@ -270,7 +270,7 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _stepTime = 0.0f;
                     var r = _rnd.Next() % (_stepSounds.Length - 1);
-                    Debug.Log(r);
+                    
                     _stepSounds[r].Play();
                 }
                 _stepTime += Time.deltaTime;
@@ -294,7 +294,7 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _stepTime = 0.0f;
                     var r = _rnd.Next() % (_stepSounds.Length - 1);
-                    Debug.Log(r);
+                    
                     _stepSounds[r].Play();
                 }
                 _stepTime += Time.deltaTime;
@@ -325,7 +325,7 @@ public class DuckNavigation : MonoBehaviour
                 {
                     _stepTime = 0.0f;
                     var r = _rnd.Next() % (_stepSounds.Length - 1);
-                    Debug.Log(r);
+                    
                     _stepSounds[r].Play();
                 }
                 _stepTime += Time.deltaTime;
