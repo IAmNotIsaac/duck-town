@@ -8,7 +8,6 @@ public class AlarmDuckView : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
         if (other.GetComponent<PlayerController>())
         {
             _alarmDuck.playerInViewArea = true;

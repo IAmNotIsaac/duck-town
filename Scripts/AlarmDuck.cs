@@ -26,6 +26,7 @@ public class AlarmDuck : MonoBehaviour
     [SerializeField] private TurnMode _turnMode = TurnMode.CONTINUOUS;
     [SerializeField] private DuckNavigation _duck;
     [SerializeField] private PlayerController _player;
+    [SerializeField] private AudioSource _sound;
     
     private State _state = State.PATROL;
     private int _i = 0;
@@ -121,6 +122,7 @@ public class AlarmDuck : MonoBehaviour
         switch (state)
         {
             case State.ALARM: {
+                _sound.Play();
                 _duck.SwitchState(DuckNavigation.NavState.ALERT);
 
                 break;
