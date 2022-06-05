@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class DoorManager : MonoBehaviour
 {
@@ -38,7 +39,11 @@ public class DoorManager : MonoBehaviour
             _sound.Play();
             _director.Play();
             _duckDoor.Open();
-            _duck.SwitchState(DuckNavigation.NavState.EXIT);
+
+            if (SceneManager.GetActiveScene().buildIndex != Ambience.FINAL_LEVEL_ID)
+            {
+                _duck.SwitchState(DuckNavigation.NavState.EXIT);
+            }
         }
     }
 }
