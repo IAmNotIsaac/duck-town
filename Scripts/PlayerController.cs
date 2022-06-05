@@ -164,8 +164,8 @@ public class PlayerController : MonoBehaviour
                     var strafe = transform.TransformDirection(Vector3.right);
 
                     var speed = new Vector2(
-                        WALK_SPEED * _inputVector.x,
-                        WALK_SPEED * _inputVector.y
+                        (WALK_SPEED + (MAX_HEALTH - health)) * _inputVector.x,
+                        (WALK_SPEED + (MAX_HEALTH - health)) * _inputVector.y
                     );
 
                     var move = forward * speed.y + strafe * speed.x;
@@ -295,8 +295,8 @@ public class PlayerController : MonoBehaviour
                     var strafe = transform.TransformDirection(Vector3.right);
 
                     var speed = new Vector2(
-                        speedFactor * _inputVector.x,
-                        speedFactor * _inputVector.y
+                        (speedFactor + (MAX_HEALTH - health)) * _inputVector.x,
+                        (speedFactor + (MAX_HEALTH - health)) * _inputVector.y
                     );
 
                     var move = forward * speed.y + strafe * speed.x;
