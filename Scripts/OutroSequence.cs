@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OutroSequence : MonoBehaviour
 {
-    const float THANK_YOU_TIME = 38.8f;
+    const float THANK_YOU_TIME = 39.3f;
     const float END_TIME = 166.0f;
 
     [SerializeField] private RawImage[] _images;
@@ -18,9 +18,9 @@ public class OutroSequence : MonoBehaviour
     void Start()
     {
         _creditsSequence.Add((7.0f, _images[0]));
-        _creditsSequence.Add((14.8f, _images[1]));
-        _creditsSequence.Add((23.8f, _images[2]));
-        _creditsSequence.Add((30.8f, _images[3]));
+        _creditsSequence.Add((15.3f, _images[1]));
+        _creditsSequence.Add((23.3f, _images[2]));
+        _creditsSequence.Add((31.3f, _images[3]));
     }
 
 
