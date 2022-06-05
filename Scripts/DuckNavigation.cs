@@ -37,6 +37,7 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Animator _anim;
     [SerializeField] private Claw _claw;
     [SerializeField] private AudioSource[] _stepSounds;
+    [SerializeField] private AudioSource _screamSound;
 
     [HideInInspector] public bool playerInViewArea = false;
 
@@ -365,6 +366,7 @@ public class DuckNavigation : MonoBehaviour
                 _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
+                _screamSound.Play();
 
                 break;
             }
