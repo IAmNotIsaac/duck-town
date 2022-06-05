@@ -348,6 +348,29 @@ public class PlayerController : MonoBehaviour
                 }
 
 
+                
+
+                { // Interacting
+                    RaycastHit hit;
+
+                    _reticleHint.enabled = false;
+                    
+                    if (Physics.Raycast(transform.position + new Vector3(0.0f, CAMERA_HEIGHT, 0.0f), _camera.transform.TransformDirection(Vector3.forward), out hit, ARM_REACH))
+                    {
+                        Switch switch_ = hit.collider.GetComponent<Switch>();
+                        if (switch_ != null)
+                        {
+                            _reticleHint.enabled = true;
+
+                            if (Input.GetButtonDown("Fire1"))
+                            {
+                                switch_.Interact();
+                            }
+                        }
+                    }
+                }
+
+
                 if (_water == null)
                 {
                     SwitchState(PlayerState.DEFAULT);
