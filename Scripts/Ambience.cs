@@ -46,7 +46,7 @@ public class Ambience : MonoBehaviour
                 if (_timeSinceMusic >= MUSIC_INTERMEDIATE_TIME)
                 {
                     _timeSinceMusic = 0.0f;
-                    _currentMusic = _music[_rnd.Next() % _music.Length - 1];
+                    _currentMusic = _music[_rnd.Next() % (_music.Length - 1)];
                     _currentMusic.Play();
                 }
                 _timeSinceMusic += Time.deltaTime;
@@ -55,7 +55,7 @@ public class Ambience : MonoBehaviour
             if (_timeSinceScream >= SCREAMS_INTERMEDIATE_TIME)
             {
                 _timeSinceScream = 0.0f;
-                _screams[_rnd.Next() % _screams.Length - 1].Play();
+                _screams[_rnd.Next() % (_screams.Length - 1)].Play();
             }
             _timeSinceScream += Time.deltaTime;
         }
