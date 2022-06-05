@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     const float HEAL_SPEED = 0.1f;
     const float DAMAGE_AMOUNT = 1.6f;
     const float DAMAGE_COOLDOWN = 0.5f;
+    const float MAX_CAM_SHAKE_DISTANCE = 5.0f;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
     [SerializeField] private PlayableDirector _cameraDirector;
@@ -69,6 +70,8 @@ public class PlayerController : MonoBehaviour
     // DEFAULT
     private float _default_leaveGroundTime = 0.0f;
     private float _default_stepSoundTimer = 0.0f;
+    private Vector3[] _default_camShakePos = new Vector3[4];
+    private int _default_camShakeI = 0;
 
     // WATER
     private Collider _water;
@@ -107,6 +110,29 @@ public class PlayerController : MonoBehaviour
     {
         GlobalData.LockMouse();
         SwitchState(PlayerState.HESITATE);
+    }
+
+
+    public void CameraShake(Vector3 duckPos)
+    {
+        // if (state == PlayerState.DEFAULT)
+        // {
+        //     _default_camShakeI = 0;
+        //     var distance = Vector3.Distance(transform.position, duckPos);
+
+        //     distance = Mathf.Clamp(MAX_CAM_SHAKE_DISTANCE - distance, 0.0f, MAX_CAM_SHAKE_DISTANCE);
+            
+        //     for (float i = 1.0f; i < 5.0f; i += 1.0f)
+        //     {
+        //         _default_camShakePos[(int)(i - 1.0f)] = new Vector3(
+        //             Mathf.Repeat((distance * (i / 4.0f)), (float)_rnd.Next()),
+        //             Mathf.Repeat((distance * (i / 4.0f)), (float)_rnd.Next()) + CAMERA_HEIGHT,
+        //             Mathf.Repeat((distance * (i / 4.0f)), (float)_rnd.Next())
+        //         );
+        //     }
+
+        //     Debug.Log(_default_camShakePos[0]);
+        // }
     }
 
 
@@ -249,6 +275,25 @@ public class PlayerController : MonoBehaviour
                             {
                                 switch_.Interact();
                             }
+                        }
+                    }
+                }
+
+
+                { // Camera Shaking
+                    if (_default_camShakeI < 4)
+                    {
+                        var targetPos = _default_camShakePos[_default_camShakeI];
+
+                        _camera.transform.localPosition = new Vector3(
+                            Mathf.Lerp(_camera.transform.localPosition.x, targetPos.x, 0.8f),
+                            Mathf.Lerp(_camera.transform.localPosition.y, targetPos.y, 0.8f),
+                            Mathf.Lerp(_camera.transform.localPosition.z, targetPos.z, 0.8f)
+                        );
+
+                        if (Vector3.Distance(_camera.transform.localPosition, targetPos) < 0.1f)
+                        {
+                            _default_camShakeI++;
                         }
                     }
                 }
