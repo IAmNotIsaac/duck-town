@@ -280,23 +280,23 @@ public class PlayerController : MonoBehaviour
                 }
 
 
-                { // Camera Shaking
-                    if (_default_camShakeI < 4)
-                    {
-                        var targetPos = _default_camShakePos[_default_camShakeI];
+                // { // Camera Shaking
+                //     if (_default_camShakeI < 4)
+                //     {
+                //         var targetPos = _default_camShakePos[_default_camShakeI];
 
-                        _camera.transform.localPosition = new Vector3(
-                            Mathf.Lerp(_camera.transform.localPosition.x, targetPos.x, 0.8f),
-                            Mathf.Lerp(_camera.transform.localPosition.y, targetPos.y, 0.8f),
-                            Mathf.Lerp(_camera.transform.localPosition.z, targetPos.z, 0.8f)
-                        );
+                //         _camera.transform.localPosition = new Vector3(
+                //             Mathf.Lerp(_camera.transform.localPosition.x, targetPos.x, 0.8f),
+                //             Mathf.Lerp(_camera.transform.localPosition.y, targetPos.y, 0.8f),
+                //             Mathf.Lerp(_camera.transform.localPosition.z, targetPos.z, 0.8f)
+                //         );
 
-                        if (Vector3.Distance(_camera.transform.localPosition, targetPos) < 0.1f)
-                        {
-                            _default_camShakeI++;
-                        }
-                    }
-                }
+                //         if (Vector3.Distance(_camera.transform.localPosition, targetPos) < 0.1f)
+                //         {
+                //             _default_camShakeI++;
+                //         }
+                //     }
+                // }
 
 
                 if (_water)
