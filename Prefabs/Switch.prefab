@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _door: {fileID: 0}
   _animator: {fileID: 5368396295052221577}
-  _sound: {fileID: 0}
+  _sound: {fileID: 4558535234258425617}
   locked: 0
 --- !u!65 &4597385911405138421
 BoxCollider:

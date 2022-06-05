@@ -14,6 +14,7 @@ public class DoorManager : MonoBehaviour
     [SerializeField] private int _nextLevelID;
     [SerializeField] private DuckDoor _duckDoor;
     [SerializeField] private Collider _doorCollision;
+    [SerializeField] private AudioSource _sound;
     private PlayableDirector _director;
     private OpenState _state = OpenState.CLOSED;
 
@@ -34,6 +35,7 @@ public class DoorManager : MonoBehaviour
         {
             _state = OpenState.OPEN;
             _doorCollision.enabled = false;
+            _sound.Play();
             _director.Play();
             _duckDoor.Open();
             _duck.SwitchState(DuckNavigation.NavState.EXIT);

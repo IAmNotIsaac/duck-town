@@ -5,6 +5,8 @@ using UnityEngine.Playables;
 
 public class DuckDoor : MonoBehaviour
 {
+    [SerializeField] AudioSource _sound;
+
     private PlayableDirector _director;
 
     void Start()
@@ -14,6 +16,7 @@ public class DuckDoor : MonoBehaviour
 
     public void Open()
     {
+        _sound.Play();
         _director.Play();
     }
 }
