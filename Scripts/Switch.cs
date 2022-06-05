@@ -7,6 +7,7 @@ public class Switch : MonoBehaviour
 {
     [SerializeField] private DoorManager _door;
     [SerializeField] private Animator _animator;
+    public bool locked = false;
 
     public void Interact()
     {

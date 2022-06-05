@@ -7,7 +7,7 @@ public class Ambience : MonoBehaviour
 {
     const float MUSIC_INTERMEDIATE_TIME = 30.0f;
     const float SCREAMS_INTERMEDIATE_TIME = 300.0f;
-    const int FINAL_LEVEL_ID = 5;
+    public const int FINAL_LEVEL_ID = 5;
 
     [SerializeField] private AudioSource[] _music;
     [SerializeField] private AudioSource[] _screams;

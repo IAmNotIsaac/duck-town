@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 
 // TODO: literally finish it
@@ -16,10 +17,14 @@ public class DuckNavigation : MonoBehaviour
         CHECK,              // we lost player, look around area
         ALERT,              // go to alert location
         EXIT,               // go to level exit,
-        CLAW                // launch claw at player
+        CLAW,               // launch claw at player
+        FINAL_WAIT,         // wait for trigger in final level
+        FINAL_CHASE         // chase after player in final level
     }
 
-    private const float IDLE_WANDER_TIME = 2.0f;
+    const float IDLE_WANDER_TIME = 2.0f;
+    const float WALK_SPEED = 3.5f;
+    const float CHASE_SPEED = WALK_SPEED * 2.0f; 
 
     // [SerializeField] public Vector3 _destination;
     [SerializeField] private NavMeshAgent _agent;
@@ -40,6 +45,15 @@ public class DuckNavigation : MonoBehaviour
     private float _targetAngle = 0.0f;
     private bool _exitOpen = false;
     private List<Vector3> _checkLocs = new List<Vector3>();
+
+
+    void Start()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == Ambience.FINAL_LEVEL_ID)
+        {
+            SwitchState(NavState.FINAL_WAIT);
+        }
+    }
 
 
     void Update()
@@ -233,6 +247,18 @@ public class DuckNavigation : MonoBehaviour
 
                 break;
             }
+
+
+            case NavState.FINAL_CHASE: {
+                _agent.destination = _player.transform.position;
+
+                if (transform.position.y < -2.0f)
+                {
+                    _agent.speed = WALK_SPEED;
+                }
+
+                break;
+            }
         }
     }
 
@@ -251,6 +277,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.WANDER: {
+                _agent.speed = WALK_SPEED;
                 _anim.Play("Base Layer.Walk");
 
                 _agent.destination = _wanderPoints[_rnd.Next() % _wanderPoints.Length].position;
@@ -260,6 +287,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.CHASE: {
+                _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
                 break;
@@ -277,6 +305,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.CHECK: {
+                _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
                 var locCount = (int)Mathf.Max(2, _rnd.Next() % 4.0f);
@@ -296,6 +325,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.ALERT: {
+                _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
                 _agent.destination = _player.transform.position;
@@ -305,10 +335,19 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.EXIT: {
+                _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
                 _agent.destination = _exitPoint.position;
                 _exitOpen = true;
+
+                break;
+            }
+
+
+            case NavState.FINAL_CHASE: {
+                _agent.speed = CHASE_SPEED;
+                _anim.Play("Base Layer.Run");
 
                 break;
             }
