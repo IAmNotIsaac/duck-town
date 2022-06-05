@@ -36,12 +36,14 @@ public class DuckNavigation : MonoBehaviour
     [SerializeField] private Transform _eyesTransform;
     [SerializeField] private Animator _anim;
     [SerializeField] private Claw _claw;
+    [SerializeField] private AudioSource[] _stepSounds;
 
     [HideInInspector] public bool playerInViewArea = false;
 
     private NavState _navState = NavState.START_PAUSE;
     private float _idleTime = 0.0f;
     private float _startTime = 0.0f;
+    private float _stepTime = 0.0f;
     private System.Random _rnd = new System.Random();
     private float _targetAngle = 0.0f;
     private bool _exitOpen = false;
@@ -118,14 +120,6 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.WANDER: {
-                // TODO: custom movement scheme
-                // ^^ move on step, not continuously.
-                // ^^ possible plan of action:
-                // ^^ 1) get next path point,
-                // ^^ 2) move in direction based on time since state,
-                // ^^ 3) profit.
-                // ^^ Do this for NavState.CHASE too.
-
                 RaycastHit hit;
                 if (Physics.Linecast(_eyesTransform.position, _player.transform.position, out hit))
                 {
@@ -146,6 +140,15 @@ public class DuckNavigation : MonoBehaviour
                 {
                     SwitchState(NavState.EXIT);
                 }
+
+
+                if (_stepTime > 1.25f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
 
                 break;
             }
@@ -191,6 +194,16 @@ public class DuckNavigation : MonoBehaviour
                     }
                 }
 
+
+                if (_stepTime > 1.0f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    Debug.Log(r);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
+
                 break;
             }
 
@@ -228,6 +241,16 @@ public class DuckNavigation : MonoBehaviour
                     }
                 }
 
+
+                if (_stepTime > 1.0f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    Debug.Log(r);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
+
                 break;
             }
 
@@ -241,6 +264,16 @@ public class DuckNavigation : MonoBehaviour
                         SwitchState(NavState.CHASE);
                     }
                 }
+
+
+                if (_stepTime > 1.0f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    Debug.Log(r);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
                 
                 break;
             }
@@ -255,6 +288,16 @@ public class DuckNavigation : MonoBehaviour
                         SwitchState(NavState.CHASE);
                     }
                 }
+
+
+                if (_stepTime > 1.0f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    Debug.Log(r);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
 
                 break;
             }
@@ -277,6 +320,16 @@ public class DuckNavigation : MonoBehaviour
                     }
                 }
 
+
+                if (_stepTime > 1.0f)
+                {
+                    _stepTime = 0.0f;
+                    var r = _rnd.Next() % (_stepSounds.Length - 1);
+                    Debug.Log(r);
+                    _stepSounds[r].Play();
+                }
+                _stepTime += Time.deltaTime;
+
                 break;
             }
         }
@@ -297,6 +350,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.WANDER: {
+                _stepTime = 0.0f;
                 _agent.speed = WALK_SPEED;
                 _anim.Play("Base Layer.Walk");
 
@@ -307,6 +361,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.CHASE: {
+                _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
@@ -325,6 +380,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.CHECK: {
+                _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
@@ -345,6 +401,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.ALERT: {
+                _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
@@ -355,6 +412,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.EXIT: {
+                _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
@@ -366,6 +424,7 @@ public class DuckNavigation : MonoBehaviour
 
 
             case NavState.FINAL_CHASE: {
+                _stepTime = 0.0f;
                 _agent.speed = CHASE_SPEED;
                 _anim.Play("Base Layer.Run");
 
