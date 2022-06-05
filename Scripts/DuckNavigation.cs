@@ -19,7 +19,8 @@ public class DuckNavigation : MonoBehaviour
         EXIT,               // go to level exit,
         CLAW,               // launch claw at player
         FINAL_WAIT,         // wait for trigger in final level
-        FINAL_CHASE         // chase after player in final level
+        FINAL_CHASE,        // chase after player in final level
+        PLAYER_DEATH        // player died, no behaviour
     }
 
     const float IDLE_WANDER_TIME = 2.0f;
@@ -45,6 +46,7 @@ public class DuckNavigation : MonoBehaviour
     private float _targetAngle = 0.0f;
     private bool _exitOpen = false;
     private List<Vector3> _checkLocs = new List<Vector3>();
+    private bool _canDamagePlayer = false;
 
 
     void Start()
@@ -179,6 +181,15 @@ public class DuckNavigation : MonoBehaviour
                         SwitchState(NavState.CHECK);
                     }
                 }
+                
+                if (_canDamagePlayer)
+                {
+                    _player.Damage();
+                    if (_player.health < 0.0f)
+                    {
+                        SwitchState(NavState.PLAYER_DEATH);
+                    }
+                }
 
                 break;
             }
@@ -255,6 +266,15 @@ public class DuckNavigation : MonoBehaviour
                 if (transform.position.y < -2.0f)
                 {
                     _agent.speed = WALK_SPEED;
+                }
+                
+                if (_canDamagePlayer)
+                {
+                    _player.Damage();
+                    if (_player.health < 0.0f)
+                    {
+                        SwitchState(NavState.PLAYER_DEATH);
+                    }
                 }
 
                 break;
@@ -367,7 +387,16 @@ public class DuckNavigation : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-            _player.Damage();
+            _canDamagePlayer = true;
+        }
+    }
+
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<PlayerController>())
+        {
+            _canDamagePlayer = false;
         }
     }
 }

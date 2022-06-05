@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
         DOOR_SOUND,
         LEVEL_EXIT,
         LEVEL_ENTER,
-        REEL
+        REEL,
+        DEATH
     }
 
     const float GRAVITY = 20.0f;
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
     const float WATER_SWIM_FREQUENCY = 0.75f;
     const float MAX_HEALTH = 3.0f;
     const float HEAL_SPEED = 0.1f;
-    const float DAMAGE_AMOUNT = 1.0f;
+    const float DAMAGE_AMOUNT = 1.6f;
     const float DAMAGE_COOLDOWN = 0.5f;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Camera _camera;
@@ -53,14 +54,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource[] _underwaterStepSounds;
     [SerializeField] private AudioSource _climbSound;
     [SerializeField] private AudioSource _doorCloseSound;
+    [SerializeField] private AudioSource _deathSound;
     [SerializeField] private PlayableDirector _levelExitFade;
     [SerializeField] private PlayableDirector _levelEnterFade;
     [SerializeField] private RawImage _damageVignette;
     [HideInInspector] public PlayerState state;
+    [HideInInspector] public float health = MAX_HEALTH;
     private Vector3 _playerVelocity;
     private Vector2 _inputVector = Vector2.zero;
     private System.Random _rnd = new System.Random();
-    private float _health = MAX_HEALTH;
     private float _damageCooldown = 0.0f;
 
     // state specific vars
@@ -97,6 +99,9 @@ public class PlayerController : MonoBehaviour
     // REEL
     private Transform _reel_ogParent;
 
+    // DEATH
+    private float _death_time = 0.0f;
+
 
     void Start()
     {
@@ -110,11 +115,11 @@ public class PlayerController : MonoBehaviour
         if (_damageCooldown <= 0.0f)
         {
             _damageCooldown = DAMAGE_COOLDOWN;
-            _health -= DAMAGE_AMOUNT;
+            health -= DAMAGE_AMOUNT;
 
-            if (_health <= 0.0f)
+            if (health <= 0.0f)
             {
-                Debug.Log("you died");
+                SwitchState(PlayerState.DEATH);
             }
         }
     }
@@ -135,12 +140,12 @@ public class PlayerController : MonoBehaviour
     void Health()
     {
         _damageCooldown -= Time.deltaTime;
-        _health = Mathf.Clamp(_health + HEAL_SPEED * Time.deltaTime, 0.0f, MAX_HEALTH);
+        health = Mathf.Clamp(health + HEAL_SPEED * Time.deltaTime, 0.0f, MAX_HEALTH);
         _damageVignette.color = new Color(
             1.0f,
             1.0f,
             1.0f,
-            1.0f - _health / MAX_HEALTH
+            1.0f - health / MAX_HEALTH
         );
     }
 
@@ -468,6 +473,17 @@ public class PlayerController : MonoBehaviour
 
                 break;
             }
+        
+
+            case PlayerState.DEATH: {
+                if (_death_time > 5.0f)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+                _death_time += Time.deltaTime;
+
+                break;
+            }
         }
     }
 
@@ -544,6 +560,14 @@ public class PlayerController : MonoBehaviour
             case PlayerState.LEVEL_ENTER: {
                 _levelEnter_startTime = 0.0f;
                 _levelEnterFade.Play();
+
+                break;
+            }
+
+
+            case PlayerState.DEATH: {
+                _deathSound.Play();
+                _levelEnterFade.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
                 break;
             }
